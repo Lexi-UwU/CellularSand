@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "cellularsand",
+  "version": "${version}",
+  "name": "CellularSand",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/cellularsand/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "lesbisoft.cellularsand.client.CellularsandDataGenerator"
+    ],
+    "client": [
+      "lesbisoft.cellularsand.client.CellularsandClient"
+    ],
+    "main": [
+      "lesbisoft.cellularsand.Cellularsand"
+    ]
+  },
+  "mixins": [
+    "cellularsand.mixins.json",
+    {
+      "config": "cellularsand.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

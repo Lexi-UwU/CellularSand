@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "lesbisoft.cellularsand.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "SandBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

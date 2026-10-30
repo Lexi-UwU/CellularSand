@@ -22,13 +22,36 @@ public class SandBlockMixin {
     @Inject(method = "scheduledTick", at = @At("HEAD"), cancellable = true)
     private void customFallingLogic(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
 
-        BlockPos[] posArray = new BlockPos[5];
+        BlockPos downPos = pos.add(0, -1, 0);
+        if (world.isAir(downPos)) {
+            world.setBlockState(downPos, state);
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+            ci.cancel();
+            return;
+        }
 
-        posArray[0] = new BlockPos(0, -1, 0);
-        posArray[1] = new BlockPos(1, -1, 0);
-        posArray[2] = new BlockPos(0, -1, 1);
-        posArray[3] = new BlockPos(-1, -1, 0);
-        posArray[4] = new BlockPos(0, -1, -1);
+
+        BlockPos[] posArray = new BlockPos[4];
+
+        posArray[0] = new BlockPos(1, -1, 0);
+        posArray[1] = new BlockPos(0, -1, 1);
+        posArray[2] = new BlockPos(-1, -1, 0);
+        posArray[3] = new BlockPos(0, -1, -1);
+
+        for (int i = posArray.length - 1; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+            BlockPos temp = posArray[i];
+            posArray[i] = posArray[j];
+            posArray[j] = temp;
+        }
+
+
+
+        //posArray[0] = new BlockPos(0, -1, 0);
+        //posArray[1] = new BlockPos(1, 0, 0);
+        //posArray[2] = new BlockPos(0, 0, 1);
+        //posArray[3] = new BlockPos(-1, 0, 0);
+        //posArray[4] = new BlockPos(0, 0, -1);
 
 
         for (BlockPos offset : posArray) {

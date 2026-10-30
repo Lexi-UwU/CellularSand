@@ -35,7 +35,7 @@ public class Cellularsand implements ModInitializer {
                     }));
     public static final GameRules.Key<GameRules.IntRule> MAX_SAND_DISTANCE_FALLOFF =
             GameRuleRegistry.register("maxSandDistanceFallOff", GameRules.Category.MISC,
-                    GameRuleFactory.createIntRule(1, 0, 4, (server, rule) -> {
+                    GameRuleFactory.createIntRule(1, 0, 30, (server, rule) -> {
                         UpdateArray(server);
                     }));
     public static final GameRules.Key<GameRules.BooleanRule> SMOOTH_FALLING_PHYSICS =
@@ -63,6 +63,7 @@ public class Cellularsand implements ModInitializer {
         physicsEnabled = server.getGameRules().getBoolean(ENABLE_FALLING_PHYSICS);
         smoothFallingPhysics = server.getGameRules().getBoolean(SMOOTH_FALLING_PHYSICS);
         gravity=server.getGameRules().get(GRAVITY).get();
+        int count=0;
         if(gravity!=Gravity.down){
             smoothFallingPhysics=false;
             onlyStraightLines=false;
@@ -74,6 +75,7 @@ public class Cellularsand implements ModInitializer {
                     for (int z = -i; z <= i; z++) {
                         if (x == i || z == i || x == -i || z == -i) {
                             sandPositionsRing.add(offsetFor(gravity, x, z));
+                            count++;
                         }
 
                     }
@@ -83,13 +85,14 @@ public class Cellularsand implements ModInitializer {
                 sandPositionsRing.add(new BlockPos(-i, -1, 0));
                 sandPositionsRing.add(new BlockPos(0, -1, i));
                 sandPositionsRing.add(new BlockPos(i, -1, i));
+                count++;
             }
             cellularSandPositions.add(sandPositionsRing);
 
 
         }
         server.getPlayerManager().broadcast(
-                Text.literal("Updated Sand Falling Array"), false);
+                Text.literal("Updated Sand Falling Array with "+count+" total positions"), false);
     }
     private static BlockPos offsetFor(Gravity gravity, int a, int b) {
         return switch (gravity) {

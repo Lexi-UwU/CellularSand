@@ -26,9 +26,9 @@ public class SandBlockMixin {
         BlockPos lastValid=null;
         for (int index = 0; index < cellularSandPositions.size(); index++) {
 
-            Optional<BlockPos> correctPos =checkRing(index, world, pos, random);
-            if (correctPos.isPresent()) {
-                lastValid=correctPos.get();
+            BlockPos correctPos =checkRing(index, world, pos, random);
+            if (correctPos!=null) {
+                lastValid=correctPos;
                 break;
             }
         }
@@ -63,7 +63,7 @@ public class SandBlockMixin {
         return block == Blocks.AIR ||
                 block == Blocks.WATER;
     }
-    private static Optional<BlockPos> checkRing(int index, ServerWorld world, BlockPos pos, Random random) {
+    private static BlockPos checkRing(int index, ServerWorld world, BlockPos pos, Random random) {
         int randomOffset = random.nextInt(cellularSandPositions.get(index).size());
         int size = cellularSandPositions.get(index).size();
         for(int i = 0; i < size; i++){
@@ -71,9 +71,9 @@ public class SandBlockMixin {
             BlockPos blockPos = pos.add(offsetPos);
             Block offsetBlock = world.getBlockState(blockPos).getBlock();
             if(canFallInto(offsetBlock)){
-                return Optional.of(blockPos);
+                return blockPos;
             }
         }
-        return Optional.empty();
+        return null;
     }
 }
